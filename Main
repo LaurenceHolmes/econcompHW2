@@ -1,8 +1,10 @@
+
 # import dataset 
 library(haven)
 donnees_airline <- read_dta("Downloads/donnees_airline.dta")
 
 # Description of Variables 
+# s0 - Rest of the market share
 # s1 - Market share of firm 1 
 # s2 - Market share of firm 2 
 # p1 - Price of firm 1 
@@ -13,7 +15,6 @@ donnees_airline <- read_dta("Downloads/donnees_airline.dta")
 
 # Change Dataset
 Airdf <- data.frame(donnees_airline)
-rm(donnees_airline)
 
 # Change Dataset
 
@@ -37,6 +38,10 @@ rm(Airdf, firm1, firm2, firms1, firms2)
 
 # Summary Statistics 
 
+donnees_airline$s0 <- 1 - donnees_airline$s1 - donnees_airline$s2
+
+summary(donnees_airline$s0)
+sd(donnees_airline$s0)
 summary(donnees_airline$s1)
 sd(donnees_airline$s1)
 summary(donnees_airline$s2)
@@ -58,13 +63,18 @@ summary(model1)
 model2 <- lm(p2~escale1+escale2+dist, data = donnees_airline)
 summary(model2)
 
+
 ####################################################################################
 ####################################################################################
 
 # Part 2 
 
 donnees_airline$lns1 <- log(donnees_airline$s1/donnees_airline$s0)
+donnees_airline$lns2 <- log(donnees_airline$s2/donnees_airline$s0)
 
 # price regression using natural log of s1 over natural log of s0
 model3 <- lm(lns1~p1+escale1+dist, data = donnees_airline)
 summary(model3)
+
+model4 <- lm(lns2~p2+escale2+dist, data = donnees_airline)
+summary(model4)
