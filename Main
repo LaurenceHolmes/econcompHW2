@@ -34,3 +34,26 @@ rm(Airdf, firm1, firm2, firms1, firms2)
 
 
 ####################################################################################
+
+# Summary Statistics 
+
+summary(donnees_airline$s1)
+sd(donnees_airline$s1)
+summary(donnees_airline$s2)
+sd(donnees_airline$s2)
+summary(donnees_airline$p1)
+sd(donnees_airline$p1)
+summary(donnees_airline$p2)
+sd(donnees_airline$p2)
+
+# Correlation between Escale and Distance 
+
+cor(donnees_airline$escale1, donnees_airline$dist)
+cor(donnees_airline$escale2, donnees_airline$dist)
+
+# price regressions 
+
+model1 <- lm(p1~escale1+escale2+dist, data = donnees_airline)
+summary(model1)
+model2 <- lm(p2~escale1+escale2+dist, data = donnees_airline)
+summary(model2)
