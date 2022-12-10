@@ -12,3 +12,34 @@ donnees_airline <- read_dta("Downloads/donnees_airline.dta")
 # dist - distance 
 
 # Change Dataset
+
+# import dataset 
+library(haven)
+donnees_airline <- read_dta("Downloads/donnees_airline.dta")
+Airline <- read_dta("Downloads/donnees_airline.dta")
+Airdf <- data.frame(Airline)
+Airdf
+
+# Description of Variables 
+# s1 - Market share of firm 1 
+@@ -11,4 +13,20 @@ donnees_airline <- read_dta("Downloads/donnees_airline.dta")
+# escale2 - whether or not firm 2 had a stop 
+# dist - distance 
+
+#Inital regressions
+
+
+# Change Dataset
+
+firm1 <- data.frame(Airdf$ligne, Airdf$s1, Airdf$p1, Airdf$escale1, Airdf$dist)
+firm2 <- data.frame(Airdf$ligne, Airdf$s2, Airdf$p2, Airdf$escale2, Airdf$dist)
+
+firms1 <- rep(1, 500)
+firms2 <- rep(2, 500)
+firm1$Firm <- firms1 
+firm2$Firm <- firms2  
+names(firm1) <- c('Line', 'Share', 'Price', 'Stops', 'Distance', 'Firm')
+names(firm2) <- c('Line', 'Share', 'Price', 'Stops', 'Distance', 'Firm')
+
+AirlineData <- rbind(firm1,firm2)
+AirlineData
