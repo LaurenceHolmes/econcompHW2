@@ -78,3 +78,19 @@ summary(model3)
 
 model4 <- lm(lns2~p2+escale2+dist, data = donnees_airline)
 summary(model4)
+
+# price regression using natural log of s1 over natural log of s0
+
+model3 <- lm(lns1~p1+escale1+dist, data = donnees_airline)
+summary(model3)
+
+model4 <- lm(lns2~p2+escale2+dist, data = donnees_airline)
+summary(model4)
+
+# price regressions using instrumental variable 
+
+model5 <- ivreg(lns1~p1+escale1 | dist+escale1, data = donnees_airline)
+summary(model5)
+
+model6 <- ivreg(lns2~p2+escale2 | dist+escale2, data = donnees_airline)
+summary(model6)
