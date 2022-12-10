@@ -57,3 +57,14 @@ model1 <- lm(p1~escale1+escale2+dist, data = donnees_airline)
 summary(model1)
 model2 <- lm(p2~escale1+escale2+dist, data = donnees_airline)
 summary(model2)
+
+####################################################################################
+####################################################################################
+
+# Part 2 
+
+donnees_airline$lns1 <- log(donnees_airline$s1/donnees_airline$s0)
+
+# price regression using natural log of s1 over natural log of s0
+model3 <- lm(lns1~p1+escale1+dist, data = donnees_airline)
+summary(model3)
