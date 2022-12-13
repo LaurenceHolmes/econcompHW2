@@ -13,26 +13,6 @@ donnees_airline <- read_dta("Downloads/donnees_airline.dta")
 # escale2 - whether or not firm 2 had a stop 
 # dist - distance 
 
-# Change Dataset
-Airdf <- data.frame(donnees_airline)
-
-# Change Dataset
-
-firm1 <- data.frame(Airdf$ligne, Airdf$s1, Airdf$p1, Airdf$escale1, Airdf$dist)
-firm2 <- data.frame(Airdf$ligne, Airdf$s2, Airdf$p2, Airdf$escale2, Airdf$dist)
-
-firms1 <- rep(1, 500)
-firms2 <- rep(2, 500)
-firm1$Firm <- firms1 
-firm2$Firm <- firms2  
-names(firm1) <- c('Line', 'Share', 'Price', 'Stops', 'Distance', 'Firm')
-names(firm2) <- c('Line', 'Share', 'Price', 'Stops', 'Distance', 'Firm')
-
-AirlineData <- rbind(firm1,firm2)
-AirlineData
-
-rm(Airdf, firm1, firm2, firms1, firms2)
-
 
 ####################################################################################
 
@@ -94,3 +74,38 @@ summary(model5)
 
 model6 <- ivreg(lns2~p2+escale2 | dist+escale2, data = donnees_airline)
 summary(model6)
+
+#################
+Airdf <- data.frame(donnees_airline)
+Airdf$s0 <- 1 - Airdf$s1 - Airdf$s2
+
+# Change Dataset
+
+firm1 <- data.frame(Airdf$ligne, Airdf$s1, Airdf$s0, Airdf$p1, Airdf$escale1, Airdf$dist)
+firm2 <- data.frame(Airdf$ligne, Airdf$s2, Airdf$s0, Airdf$p2, Airdf$escale2, Airdf$dist)
+firm1$lns <- log(Airdf$s1/Airdf$s0)
+firm2$lns <- log(Airdf$s2/Airdf$s0)
+firm1
+
+firms1 <- rep(1, 500)
+firms2 <- rep(2, 500)
+firm1$Firm <- firms1 
+firm2$Firm <- firms2  
+names(firm1) <- c('Line', 's', 's0', 'p', 'Stops', 'dist', 'lns', 'Firm')
+names(firm2) <- c('Line', 's', 's0', 'p', 'Stops', 'dist', 'lns', 'Firm')
+
+AirlineData <- rbind(firm1,firm2)
+
+
+model100 <- lm(lns~p+Stops+dist, data = AirlineData)
+summary(model100)
+
+model7 <- ivreg(lns~p+Stops | dist+Stops, data = AirlineData)
+summary(model7)
+
+####################
+
+AirlineData$c <- AirlineData$p - (1/(0.131*(1-AirlineData$s)))
+sum(AirlineData$p)/1000
+sum(AirlineData$c)/1000
+186.9179/200.7861
